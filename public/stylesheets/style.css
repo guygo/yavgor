@@ -2,9 +2,35 @@
   font-size: 130%;
 }
 
-.hero {
+body {
+  padding: 30px;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3),rgba(0, 0, 0, 0.3)) , url(../images/hero-image.jpg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  height: 100vh;
+}
+
+.hero h1{
+
   text-align: center;
-  padding-top: 70px;
+  color: #fff;
+  padding-top: 15px;
+  font-weight: 200;
+  font-size: 250%;
+  font-family: cursive;
+  text-transform: uppercase;
+}
+
+.hero button {
+  margin: 0 auto;
+  margin-top: 50px;
+  display: block;
+
+}
+
+a {
+  color: #fff;
 }
 
 #login-dp{

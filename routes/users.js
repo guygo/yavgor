@@ -38,6 +38,7 @@ router.post('/register', function(req, res){
             errors:errors
         });
     } else {
+
         var newUser = new User({
             name: name,
             email:email,
@@ -46,13 +47,18 @@ router.post('/register', function(req, res){
         });
 
         User.createUser(newUser, function(err, user){
-            if(err) throw err;
+            if(err)
+            {
+                req.flash('already exist');
+                res.redirect('/users/register');
+            }
             console.log(user);
         });
 
         req.flash('success_msg', 'You are registered and can now login');
 
         res.redirect('/users/login');
+
     }
 });
 

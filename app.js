@@ -23,7 +23,7 @@ var app = express();
 // Connect Flash
 app.use(flash());
 
-
+app.use(expressValidator());
 // view engine setup
 app.engine('.hbs', expressHbs({defaultLayout: 'layout', extname: '.hbs'}));
 app.set('view engine', '.hbs');

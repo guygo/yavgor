@@ -1,55 +1,43 @@
+// app/models/user.js
+// load the things we need
 var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
+var bcrypt   = require('bcrypt-nodejs');
 
-// User Schema
-var UserSchema = mongoose.Schema({
-    username: {
-        type: String,
-        index:true,
-        unique: true,
-        required: true,
-        trim: true
+// define the schema for our user model
+var userSchema = mongoose.Schema({
+
+    local            : {
+        username     : String,
+        email        : String,
+        password     : String,
     },
-    password: {
-        type: String
+    facebook         : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
     },
-    email: {
-        type: String,
-        unique: true,
-        required: true,
-        trim: true
+    twitter          : {
+        id           : String,
+        token        : String,
+        displayName  : String,
+        username     : String
     },
-    name: {
-        type: String
+    google           : {
+        id           : String,
+        token        : String,
+        email        : String,
+        name         : String
     }
+
 });
 
-var User = module.exports = mongoose.model('User', UserSchema);
+userSchema.methods.encryptPassword = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
+};
 
-module.exports.createUser = function(newUser, callback) {
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.password);
+};
 
-
-    bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(newUser.password, salt, function (err, hash) {
-            newUser.password = hash;
-            newUser.save(callback);
-        });
-
-    });
-
-}
-module.exports.getUserByUsername = function(username, callback){
-    var query = {username: username};
-    User.findOne(query, callback);
-}
-
-module.exports.getUserById = function(id, callback){
-    User.findById(id, callback);
-}
-
-module.exports.comparePassword = function(candidatePassword, hash, callback){
-    bcrypt.compare(candidatePassword, hash, function(err, isMatch) {
-        if(err) throw err;
-        callback(null, isMatch);
-    });
-}
+module.exports = mongoose.model('User', userSchema);

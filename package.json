@@ -16,6 +16,8 @@
     "serve-favicon": "~2.4.5",
     "bcryptjs": "*",
     "connect-flash": "*",
+    "csurf": "^1.8.3",
+    "bcrypt-nodejs": "*",
     "express-messages": "*",
     "express-session": "*",
     "express-validator": "*",

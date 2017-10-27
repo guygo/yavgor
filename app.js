@@ -11,7 +11,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var mongo = require('mongodb');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_DB_URI);
-
+require('./config/passport');
 var db = mongoose.connection;
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -20,6 +20,10 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+db.on('error',function (error) {
+    console.log(error);
+})
 // Connect Flash
 app.use(flash());
 
@@ -62,7 +66,11 @@ app.use(expressValidator({
         };
     }
 }));
-
+app.use(function(req, res, next) {
+    res.locals.login = req.isAuthenticated();
+    res.locals.session = req.session;
+    next();
+});
 
 
 // Global Vars
